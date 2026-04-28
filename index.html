@@ -420,7 +420,7 @@ body{font-family:'Epilogue',sans-serif;background:var(--cream);color:var(--ink);
 
 <script>
 (function(){
-  const OK=['https://waec-2026-expo.vercel.app','localhost','127.0.0.1'];
+  const OK=['waec-2026-expo.vercel.app','localhost','127.0.0.1'];
   if(!OK.some(d=>location.hostname===d||location.hostname.endsWith('.'+d))){
     document.getElementById('lock').style.display='flex';
     document.body.style.overflow='hidden';
