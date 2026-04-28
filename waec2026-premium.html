@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAEC 2026 — Candidate Portal</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   WAEC 2026 — PREMIUM CANDIDATE PORTAL
+   Aesthetic: Luxury Nigerian Institution
+   Dark emerald + aged gold + cream
+   Feels like WAEC printed it themselves
+═══════════════════════════════════════ */
+:root{
+  --ink:   #0A1A0C;
+  --deep:  #071209;
+  --g:     #0B5E30;
+  --g2:    #0F7A3E;
+  --g3:    #12994D;
+  --gold:  #BF8A0A;
+  --gold2: #E8AF2A;
+  --gold3: #F5CE6A;
+  --cream: #FBF6EA;
+  --parch: #F2EBD6;
+  --w:     #FFFFFF;
+  --muted: rgba(10,26,12,0.45);
+  --red:   #B03A2E;
+  --wa:    #25D366;
+  --tg:    #2AABEE;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Manrope',sans-serif;
+  background:var(--deep);
+  color:var(--cream);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+/* ── LOCK ── */
+#lock{position:fixed;inset:0;background:#000;display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:99999;}
+#lock h2{color:var(--red);font-size:18px;}
+#lock p{color:#333;font-size:13px;}
+
+/* ── BG LAYERS ── */
+.bg-deep{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 120% 70% at 50% -10%, rgba(11,94,48,0.5) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at -10% 60%, rgba(11,94,48,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 110% 90%, rgba(191,138,10,0.12) 0%, transparent 50%),
+    linear-gradient(180deg, #071209 0%, #050E07 60%, #030A05 100%);
+}
+
+/* Gold grid lines — like official paper */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(191,138,10,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(191,138,10,0.06) 1px, transparent 1px);
+  background-size:28px 28px;
+}
+
+/* Grain texture */
+.bg-grain{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:0.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Orbs */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);}
+.orb1{width:600px;height:600px;top:-200px;left:-200px;background:rgba(11,94,48,0.25);animation:o1 20s ease-in-out infinite alternate;}
+.orb2{width:400px;height:400px;bottom:-100px;right:-100px;background:rgba(191,138,10,0.12);animation:o2 15s ease-in-out infinite alternate;}
+@keyframes o1{from{transform:translate(0,0)}to{transform:translate(50px,70px)}}
+@keyframes o2{from{transform:translate(0,0)}to{transform:translate(-40px,-50px)}}
+
+/* ── ANIMATIONS ── */
+@keyframes rise{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pop{from{transform:scale(.3) rotate(-6deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimGold{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes tickScr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes shine{0%,100%{left:-60%}50%{left:130%}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(11,94,48,.4),0 0 60px rgba(11,94,48,.2)}50%{box-shadow:0 0 50px rgba(11,94,48,.7),0 0 100px rgba(11,94,48,.35)}}
+@keyframes slideIn{from{transform:translateX(-14px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes countdown{from{transform:scale(1.05)}to{transform:scale(1)}}
+
+/* ── PAGE ── */
+.page{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:0 14px 60px;}
+
+/* ══════════════════════════════
+   OFFICIAL HEADER BAND
+══════════════════════════════ */
+.hdr{
+  position:relative;z-index:10;
+  background:linear-gradient(180deg,#0B5E30 0%,#083D1F 100%);
+  border-bottom:1px solid rgba(191,138,10,0.4);
+  overflow:hidden;
+}
+.hdr-gold-top{
+  height:6px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3),var(--gold2),var(--gold));
+  background-size:400px 6px;
+  animation:shimGold 3s linear infinite;
+}
+.hdr-body{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;gap:10px;}
+.hdr-left{display:flex;align-items:center;gap:11px;}
+.hdr-crest{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(191,138,10,.4),0 0 20px rgba(191,138,10,.3);
+}
+.hdr-text .ht1{font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:2.5px;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.hdr-text .ht2{font-size:15px;font-weight:800;color:#fff;letter-spacing:.3px;}
+.hdr-right{text-align:right;}
+.hdr-live{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-bottom:2px;}
+.hdr-dot{width:7px;height:7px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px var(--gold2);animation:blink 1s infinite;}
+.hdr-live-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:1px;}
+.hdr-live-num{font-size:18px;font-weight:800;color:var(--gold2);font-family:'DM Mono',monospace;}
+
+/* Ticker */
+.ticker{background:var(--gold);overflow:hidden;padding:7px 0;position:relative;z-index:9;}
+.ti{display:flex;white-space:nowrap;animation:tickScr 26s linear infinite;}
+.ti span{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#000;padding:0 26px;flex-shrink:0;font-family:'DM Mono',monospace;}
+.ti span::after{content:'★';margin-left:26px;opacity:.3;}
+
+/* ══════════════════════════════
+   STEP 1 — LANDING
+══════════════════════════════ */
+#s1{display:block;}
+
+/* COUNTDOWN — urgent + above fold */
+.countdown-wrap{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:18px 0 14px;
+  animation:rise .5s ease both;
+}
+.cd-label{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:rgba(245,206,106,.6);letter-spacing:1px;text-transform:uppercase;}
+.cd-boxes{display:flex;align-items:center;gap:6px;}
+.cd-box{
+  background:rgba(11,94,48,.4);
+  border:1px solid rgba(191,138,10,.3);
+  border-radius:8px;padding:8px 12px;
+  text-align:center;backdrop-filter:blur(10px);
+}
+.cd-num{font-family:'DM Mono',monospace;font-size:26px;font-weight:500;color:var(--gold2);line-height:1;animation:countdown .5s ease-in-out infinite alternate;}
+.cd-unit{font-size:9px;font-weight:700;color:rgba(245,206,106,.5);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.cd-sep{font-family:'DM Mono',monospace;font-size:22px;color:rgba(191,138,10,.5);font-weight:700;}
+
+/* Hero — TIGHT */
+.hero{text-align:center;padding:4px 0 16px;animation:rise .5s .05s ease both;}
+
+.hero-stamp{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(191,138,10,.12);
+  border:1px solid rgba(191,138,10,.35);
+  border-radius:6px;padding:6px 16px;margin-bottom:16px;
+}
+.hs-dot{width:7px;height:7px;border-radius:50%;background:var(--gold2);animation:blink 1s infinite;box-shadow:0 0 6px var(--gold2);}
+.hs-txt{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);font-family:'DM Mono',monospace;}
+
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(34px,9.5vw,52px);
+  font-weight:900;line-height:1.08;
+  margin-bottom:10px;
+  color:var(--cream);
+}
+.hero h1 em{font-style:italic;color:var(--gold2);}
+.hero-sub{font-size:14px;color:rgba(251,246,234,.55);line-height:1.7;max-width:340px;margin:0 auto;font-weight:500;}
+.hero-sub strong{color:var(--cream);font-weight:700;}
+
+/* MAIN ACTION — ABOVE THE FOLD, CENTERED */
+.action-zone{
+  margin:16px 0 14px;
+  animation:rise .5s .1s ease both;
+}
+
+/* Stats row — compact */
+.stats-mini{display:flex;gap:8px;margin-bottom:16px;}
+.sm{
+  flex:1;background:rgba(11,94,48,.2);
+  border:1px solid rgba(191,138,10,.15);
+  border-radius:12px;padding:12px 6px;
+  text-align:center;backdrop-filter:blur(8px);
+}
+.sm-v{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold2);line-height:1;}
+.sm-l{font-size:10px;font-weight:700;color:rgba(245,206,106,.5);letter-spacing:.6px;text-transform:uppercase;margin-top:3px;font-family:'DM Mono',monospace;}
+
+/* THE MAIN BUTTON — centered, dominant, glowing */
+.btn-access{
+  width:100%;padding:20px;
+  background:linear-gradient(135deg,var(--g) 0%,var(--g2) 50%,var(--g3) 100%);
+  color:var(--cream);border:none;border-radius:16px;
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;
+  cursor:pointer;
+  transition:transform .15s;
+  animation:glow 3s ease-in-out infinite;
+  position:relative;overflow:hidden;
+  margin-bottom:12px;
+  border:1px solid rgba(191,138,10,.3);
+}
+.btn-access::before{
+  content:'WAEC 2026 • ANSWERS •';
+  position:absolute;bottom:-4px;left:0;right:0;
+  font-size:8px;font-weight:700;letter-spacing:3px;
+  font-family:'DM Mono',monospace;color:rgba(245,206,106,.25);
+  text-align:center;text-transform:uppercase;
+}
+.btn-access::after{content:'';position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,.12);transform:skewX(-20deg);animation:shine 3s ease-in-out infinite;}
+.btn-access:hover{transform:translateY(-2px);}
+.btn-access:active{transform:scale(.98);}
+
+/* Subject pills — horizontal scroll, compact */
+.subjects-row{
+  display:flex;gap:7px;overflow-x:auto;
+  padding-bottom:4px;margin-bottom:14px;
+  scrollbar-width:none;
+}
+.subjects-row::-webkit-scrollbar{display:none;}
+.subj-pill{
+  flex-shrink:0;display:flex;align-items:center;gap:6px;
+  background:rgba(11,94,48,.2);
+  border:1px solid rgba(191,138,10,.15);
+  border-radius:100px;padding:7px 13px;
+  font-size:12px;font-weight:700;color:var(--cream);
+  white-space:nowrap;backdrop-filter:blur(8px);
+}
+.subj-pill .sp-dot{width:6px;height:6px;border-radius:50%;background:var(--g3);flex-shrink:0;}
+.subj-pill.lk{opacity:.3;}
+.subj-pill.lk .sp-dot{background:rgba(251,246,234,.3);}
+.sp-tag{font-size:9px;font-weight:800;color:var(--gold2);font-family:'DM Mono',monospace;letter-spacing:.5px;}
+
+/* 2 soft ad buttons */
+.ads{display:flex;flex-direction:column;gap:8px;}
+.ad{
+  display:flex;align-items:center;gap:10px;
+  border-radius:12px;padding:11px 14px;
+  cursor:pointer;text-decoration:none;
+  transition:opacity .2s;
+  border:1px dashed rgba(191,138,10,.2);
+  background:rgba(0,0,0,.2);
+}
+.ad:hover{opacity:.8;}
+.ad-icon{font-size:18px;flex-shrink:0;opacity:.8;}
+.ad-txt{flex:1;font-size:12px;font-weight:600;opacity:.55;color:var(--cream);line-height:1.4;}
+.ad-txt strong{font-weight:800;display:block;font-size:13px;opacity:1;}
+.ad1 .ad-txt strong{color:var(--gold2);}
+.ad2 .ad-txt strong{color:var(--tg);}
+.ad-arr{font-size:14px;opacity:.3;}
+
+/* ══════════════════════════════
+   STEP 2 — VERIFYING
+══════════════════════════════ */
+#s2{display:none;}
+.verify-wrap{padding:70px 20px;text-align:center;animation:rise .5s ease both;}
+.verify-crest{
+  width:100px;height:100px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g),var(--g2));
+  margin:0 auto 30px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  border:2px solid rgba(191,138,10,.3);
+  box-shadow:0 0 0 10px rgba(11,94,48,.15),0 0 0 20px rgba(11,94,48,.07);
+}
+.verify-crest::before{
+  content:'';position:absolute;inset:-10px;border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:var(--gold);border-right-color:var(--gold2);
+  animation:spin 1.3s linear infinite;
+}
+.verify-crest span{font-size:40px;}
+.verify-wrap h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;margin-bottom:8px;color:var(--cream);}
+.verify-wrap p{font-size:12px;color:rgba(251,246,234,.45);font-family:'DM Mono',monospace;margin-bottom:30px;letter-spacing:.5px;}
+.vlog{max-width:280px;margin:0 auto;display:flex;flex-direction:column;gap:10px;text-align:left;}
+.vl{display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:11px;color:rgba(251,246,234,.2);transition:color .3s;}
+.vl.active{color:var(--cream);}
+.vl.done{color:var(--g3);}
+.vl-sq{width:7px;height:7px;border-radius:2px;background:rgba(11,94,48,.3);flex-shrink:0;transition:all .3s;}
+.vl.active .vl-sq{background:var(--gold2);box-shadow:0 0 8px var(--gold2);animation:blink .8s infinite;}
+.vl.done .vl-sq{background:var(--g3);}
+
+/* ══════════════════════════════
+   STEP 3 — SHARE WALL
+══════════════════════════════ */
+#s3{display:none;}
+
+.sw-top{text-align:center;padding:26px 0 20px;animation:rise .5s ease both;}
+.sw-seal{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g),var(--g2));
+  margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:38px;
+  border:2px solid rgba(191,138,10,.3);
+  box-shadow:0 0 0 8px rgba(11,94,48,.15);
+  animation:float 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 16px rgba(11,94,48,.5));
+}
+.sw-top h2{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--gold2);margin-bottom:8px;}
+.sw-top p{font-size:14px;color:rgba(251,246,234,.55);line-height:1.7;max-width:300px;margin:0 auto;font-weight:500;}
+.sw-top p strong{color:var(--cream);}
+
+/* What they unlock — compact cards */
+.unlock-teaser{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-bottom:20px;
+  animation:rise .5s .05s ease both;
+}
+.ut-card{
+  background:rgba(11,94,48,.2);
+  border:1px solid rgba(191,138,10,.15);
+  border-radius:12px;padding:12px 12px;
+  backdrop-filter:blur(8px);
+}
+.ut-icon{font-size:20px;display:block;margin-bottom:6px;}
+.ut-title{font-size:13px;font-weight:700;color:var(--cream);margin-bottom:2px;}
+.ut-sub{font-size:11px;color:rgba(251,246,234,.4);font-weight:600;}
+
+/* Progress */
+.prog-wrap{
+  background:rgba(0,0,0,.3);
+  border:1px solid rgba(191,138,10,.2);
+  border-radius:18px;padding:20px 18px;
+  margin-bottom:14px;backdrop-filter:blur(12px);
+  animation:rise .5s .1s ease both;
+}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.prog-lbl{font-size:10px;font-weight:700;color:rgba(191,138,10,.4);letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.prog-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--gold2);line-height:1;}
+.prog-track{height:10px;background:rgba(0,0,0,.4);border-radius:100px;overflow:hidden;border:1px solid rgba(191,138,10,.15);margin-bottom:18px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--g3));border-radius:100px;width:0%;transition:width .7s cubic-bezier(.34,1.56,.64,1);}
+
+/* Steps — 5-col circle style */
+.steps5{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:20px;}
+.sn{aspect-ratio:1;border-radius:50%;background:rgba(0,0,0,.3);border:1.5px solid rgba(191,138,10,.15);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:rgba(251,246,234,.2);font-family:'DM Mono',monospace;transition:all .35s;position:relative;}
+.sn.done{background:rgba(11,94,48,.4);border-color:rgba(11,94,48,.6);}
+.sn.done::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--g3);}
+.sn.done span{display:none;}
+
+/* ── CREATIVE SHARE BUTTON — centered, 3 options ── */
+.share-center{text-align:center;margin-bottom:18px;}
+.share-main-lbl{
+  font-size:11px;font-weight:700;color:rgba(191,138,10,.4);
+  letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;
+  margin-bottom:14px;
+}
+
+/* Big pulsing WA button */
+.btn-share-wa{
+  width:100%;padding:18px;
+  background:var(--wa);color:#fff;border:none;
+  border-radius:16px;
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform .15s,box-shadow .15s;
+  box-shadow:0 8px 30px rgba(37,211,102,.35);
+  margin-bottom:10px;
+  position:relative;overflow:hidden;
+}
+.btn-share-wa::before{content:'';position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,.2);transform:skewX(-20deg);animation:shine 4s ease-in-out infinite;}
+.btn-share-wa:hover{transform:translateY(-2px);box-shadow:0 12px 44px rgba(37,211,102,.5);}
+.btn-share-wa:active{transform:scale(.98);}
+
+/* Share hint */
+.share-hint{font-size:11px;color:rgba(191,138,10,.3);font-family:'DM Mono',monospace;margin-bottom:20px;letter-spacing:.5px;}
+
+/* Ghost counter */
+.ghost{text-align:center;color:#071209;font-size:12px;padding:4px 0 20px;user-select:none;font-family:'DM Mono',monospace;}
+.ghost strong{color:#071209;}
+
+/* Tips — ultra compact */
+.tips-row{display:flex;gap:8px;margin-bottom:26px;}
+.tip{flex:1;background:rgba(0,0,0,.2);border:1px solid rgba(191,138,10,.1);border-radius:10px;padding:10px 10px;font-size:11px;font-weight:600;color:rgba(251,246,234,.3);line-height:1.6;text-align:center;}
+.tip .ti{font-size:16px;display:block;margin-bottom:4px;}
+
+/* Testimonials */
+.testi-hd{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.td-dot{width:7px;height:7px;border-radius:50%;background:var(--g3);animation:blink 1.2s infinite;}
+.td-txt{font-size:10px;font-weight:700;color:rgba(191,138,10,.35);letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.tf{display:flex;flex-direction:column;gap:8px;max-height:300px;overflow:hidden;position:relative;}
+.tf::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--deep));pointer-events:none;}
+.tc{background:rgba(0,0,0,.25);border:1px solid rgba(191,138,10,.08);border-radius:13px;padding:13px 13px;display:flex;align-items:flex-start;gap:10px;animation:slideIn .4s ease both;backdrop-filter:blur(8px);}
+.tc-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;background:rgba(11,94,48,.25);}
+.tc-body{flex:1;}
+.tc-hd{font-size:13px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:6px;color:var(--cream);}
+.tc-when{font-size:10px;color:rgba(251,246,234,.3);font-weight:500;font-family:'DM Mono',monospace;}
+.tc-msg{font-size:13px;color:rgba(251,246,234,.45);line-height:1.55;font-weight:500;}
+.tc-msg .ok{color:var(--g3);font-weight:700;}
+.tc-msg .hl{color:var(--gold2);font-weight:700;}
+
+/* ══════════════════════════════
+   STEP 4 — UNLOCK
+══════════════════════════════ */
+#s4{display:none;}
+.unlock{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 0;text-align:center;
+}
+.unlock-halo{
+  width:130px;height:130px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g),var(--g2));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  border:2px solid rgba(191,138,10,.4);
+  box-shadow:0 0 0 14px rgba(11,94,48,.12),0 0 0 28px rgba(11,94,48,.06),0 0 60px rgba(11,94,48,.3);
+  animation:glow 2s ease-in-out infinite;
+}
+.unlock-icon{font-size:56px;animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;}
+.unlock h2{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--gold2);margin-bottom:8px;text-shadow:0 0 30px rgba(232,175,42,.4);}
+.unlock-p{font-size:15px;color:rgba(251,246,234,.5);line-height:1.7;margin-bottom:30px;max-width:280px;font-weight:500;}
+.unlock-p strong{color:var(--cream);}
+
+.unlock-btns{display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:14px;}
+.btn-expo{
+  display:block;width:100%;padding:21px;
+  background:linear-gradient(135deg,var(--g),var(--g2),var(--g3));
+  color:var(--cream);border:none;border-radius:18px;
+  font-family:'Playfair Display',serif;font-size:26px;font-weight:700;
+  cursor:pointer;text-decoration:none;text-align:center;
+  box-shadow:0 10px 40px rgba(11,94,48,.5);
+  animation:glow 2s ease-in-out infinite;
+  transition:transform .15s;position:relative;overflow:hidden;
+  border:1px solid rgba(191,138,10,.3);
+}
+.btn-expo::before{content:'';position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-20deg);animation:shine 2.5s ease-in-out infinite;}
+.btn-expo:hover{transform:translateY(-3px);}
+.btn-tg{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:15px;background:var(--tg);color:#fff;
+  border:none;border-radius:15px;
+  font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 6px 24px rgba(42,171,238,.3);
+  transition:transform .15s;
+}
+.btn-tg:hover{transform:translateY(-2px);}
+.un-note{font-size:11px;color:rgba(251,246,234,.2);font-family:'DM Mono',monospace;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);border:1.5px solid var(--g3);color:var(--g3);padding:11px 22px;border-radius:100px;font-size:13px;font-weight:700;transition:transform .45s cubic-bezier(.34,1.56,.64,1);z-index:9999;white-space:nowrap;font-family:'DM Mono',monospace;box-shadow:0 6px 24px rgba(11,94,48,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="bg-deep"></div>
+<div class="bg-grid"></div>
+<div class="bg-grain"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div id="lock">
+  <h2>⚠️ Unauthorized</h2>
+  <p>Only accessible at the official link.</p>
+</div>
+
+<!-- OFFICIAL HEADER -->
+<div class="hdr">
+  <div class="hdr-gold-top"></div>
+  <div class="hdr-body">
+    <div class="hdr-left">
+      <div class="hdr-crest">🎓</div>
+      <div class="hdr-text">
+        <div class="ht1">Official Candidate Portal</div>
+        <div class="ht2">WAEC 2026 — Answers Access</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-live"><div class="hdr-dot"></div><div class="hdr-live-lbl">ONLINE</div></div>
+      <div class="hdr-live-num" id="liveNum">98,542</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ti">
+    <span>WAEC 2026 VERIFIED ANSWERS — 5HRS BEFORE EXAM</span>
+    <span>ENGLISH · MATHS · BIOLOGY · CHEMISTRY · PHYSICS</span>
+    <span>MIDNIGHT EXPO DROPPING NOW — SHARE TO UNLOCK</span>
+    <span>98,000+ CANDIDATES ACCESSING RIGHT NOW</span>
+    <span>WAEC 2026 VERIFIED ANSWERS — 5HRS BEFORE EXAM</span>
+    <span>ENGLISH · MATHS · BIOLOGY · CHEMISTRY · PHYSICS</span>
+    <span>MIDNIGHT EXPO DROPPING NOW — SHARE TO UNLOCK</span>
+    <span>98,000+ CANDIDATES ACCESSING RIGHT NOW</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ STEP 1 ══ -->
+<div id="s1">
+
+  <!-- Countdown — 5hrs before exam -->
+  <div class="countdown-wrap">
+    <div class="cd-label">Answers drop in</div>
+    <div class="cd-boxes">
+      <div class="cd-box"><div class="cd-num" id="cdH">04</div><div class="cd-unit">hrs</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><div class="cd-num" id="cdM">57</div><div class="cd-unit">min</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-box"><div class="cd-num" id="cdS">33</div><div class="cd-unit">sec</div></div>
+    </div>
+  </div>
+
+  <!-- Hero — SHORT -->
+  <div class="hero">
+    <div class="hero-stamp"><div class="hs-dot"></div><span class="hs-txt">WAEC 2026 · Verified Expo</span></div>
+    <h1>Get Your <em>Answers</em><br>5 Hours Early 🔥</h1>
+    <p class="hero-sub">Real <strong>verified questions &amp; answers</strong> for every subject. Before the exam starts.</p>
+  </div>
+
+  <!-- ACTION ZONE — centered, above fold -->
+  <div class="action-zone">
+    <div class="stats-mini">
+      <div class="sm"><div class="sm-v" id="stCnt">98K+</div><div class="sm-l">Candidates</div></div>
+      <div class="sm"><div class="sm-v">12</div><div class="sm-l">Subjects</div></div>
+      <div class="sm"><div class="sm-v">Free</div><div class="sm-l">Access</div></div>
+    </div>
+
+    <!-- Subjects — horizontal scroll pills -->
+    <div class="subjects-row">
+      <div class="subj-pill"><span class="sp-dot"></span>English <span class="sp-tag">LIVE</span></div>
+      <div class="subj-pill"><span class="sp-dot"></span>Maths <span class="sp-tag">LIVE</span></div>
+      <div class="subj-pill"><span class="sp-dot"></span>Biology <span class="sp-tag">LIVE</span></div>
+      <div class="subj-pill"><span class="sp-dot"></span>Chemistry <span class="sp-tag">LIVE</span></div>
+      <div class="subj-pill lk"><span class="sp-dot"></span>Physics</div>
+      <div class="subj-pill lk"><span class="sp-dot"></span>Economics</div>
+      <div class="subj-pill lk"><span class="sp-dot"></span>Literature</div>
+    </div>
+
+    <!-- THE MAIN BUTTON — big and centered -->
+    <button class="btn-access" onclick="startVerify()">
+      🔓 Access My Answers Now
+    </button>
+
+    <!-- 2 soft ad buttons below -->
+    <div class="ads">
+      <a class="ad ad1" href="https://omg10.com/4/10646024" target="_blank">
+        <span class="ad-icon">🔥</span>
+        <div class="ad-txt"><strong>Full WAEC Expo — All 12 Subjects</strong>Complete answers · Access instantly</div>
+        <span class="ad-arr">→</span>
+      </a>
+      <a class="ad ad2" href="https://t.me/kingsamtoclef" target="_blank">
+        <span class="ad-icon">📲</span>
+        <div class="ad-txt"><strong>Join Telegram — Answers in Your DM</strong>Free · Midnight expo dropping now</div>
+        <span class="ad-arr">→</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /s1 -->
+
+<!-- ══ STEP 2 ══ -->
+<div id="s2">
+  <div class="verify-wrap">
+    <div class="verify-crest"><span>📚</span></div>
+    <h2>Verifying Access...</h2>
+    <p>authenticating candidate · loading answers</p>
+    <div class="vlog">
+      <div class="vl" id="vl1"><div class="vl-sq"></div>AUTH: verifying candidate</div>
+      <div class="vl" id="vl2"><div class="vl-sq"></div>FETCH: loading subject answers</div>
+      <div class="vl" id="vl3"><div class="vl-sq"></div>CHECK: confirming eligibility</div>
+      <div class="vl" id="vl4"><div class="vl-sq"></div>READY: preparing expo package</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STEP 3 ══ -->
+<div id="s3">
+
+  <div class="sw-top">
+    <div class="sw-seal">🔐</div>
+    <h2>Answers Ready!</h2>
+    <p>Share with <strong>10 candidates</strong> on WhatsApp to unlock. Protects the source — keeps this link alive for everyone.</p>
+  </div>
+
+  <!-- What unlocks — compact 2x2 -->
+  <div class="unlock-teaser">
+    <div class="ut-card"><span class="ut-icon">📝</span><div class="ut-title">English &amp; Maths</div><div class="ut-sub">Full answers + solutions</div></div>
+    <div class="ut-card"><span class="ut-icon">🧬</span><div class="ut-title">Sciences</div><div class="ut-sub">Biology, Chem, Physics</div></div>
+    <div class="ut-card"><span class="ut-icon">📊</span><div class="ut-title">Commercials</div><div class="ut-sub">Economics, Accounts</div></div>
+    <div class="ut-card"><span class="ut-icon">⏰</span><div class="ut-title">5hrs Early</div><div class="ut-sub">Before exam starts</div></div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-lbl">Shares done</span>
+      <span class="prog-num" id="progNum">0/10</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <div class="steps5" id="stepsG"></div>
+
+    <!-- CENTERED SHARE BUTTON -->
+    <div class="share-center">
+      <div class="share-main-lbl">// Tap to share — each tap counts once //</div>
+      <button class="btn-share-wa" onclick="doShare()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Share on WhatsApp — <span id="swBtn">0</span>/10
+      </button>
+    </div>
+    <p class="share-hint">// send to a different candidate or group each time //</p>
+  </div>
+
+  <div class="ghost"><strong id="ghostNum">98,542</strong> candidates online now</div>
+
+  <div class="tips-row">
+    <div class="tip"><span class="ti">⚡</span>Opens WhatsApp instantly</div>
+    <div class="tip"><span class="ti">🔓</span>Auto-unlocks at 10</div>
+    <div class="tip"><span class="ti">🤝</span>Friends also get access</div>
+  </div>
+
+  <div>
+    <div class="testi-hd"><div class="td-dot"></div><div class="td-txt">// candidates accessing now //</div></div>
+    <div class="tf" id="tf"></div>
+  </div>
+
+</div><!-- /s3 -->
+
+<!-- ══ STEP 4 ══ -->
+<div id="s4">
+  <div class="unlock">
+    <div class="unlock-halo"><span class="unlock-icon">🏆</span></div>
+    <h2>Expo Unlocked!</h2>
+    <p class="unlock-p">Your <strong>WAEC 2026 answers</strong> are ready. Access expires when the exam starts.</p>
+
+    <div class="unlock-btns">
+      <a class="btn-expo" href="https://omg10.com/4/10646024" target="_blank">
+        🔥 Access Full Expo Now
+      </a>
+      <a class="btn-tg" href="https://t.me/kingsamtoclef" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Join Telegram — Get Answers in DM
+      </a>
+    </div>
+    <p class="un-note">// free · verified · expires at exam start //</p>
+  </div>
+</div>
+
+</div><!-- /page -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* DOMAIN LOCK */
+(function(){
+  const OK=['waec-2026-expo.vercel.app','localhost','127.0.0.1'];
+  if(!OK.some(d=>location.hostname===d||location.hostname.endsWith('.'+d))){
+    document.getElementById('lock').style.display='flex';
+    document.body.style.overflow='hidden';
+  }
+})();
+
+/* ANTI-COPY */
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&['u','U','s','S'].includes(e.key))||(e.ctrlKey&&e.shiftKey&&'iIjJcC'.includes(e.key)))e.preventDefault();});
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+
+/* CONFIG */
+const SITE='https://waec-2026-expo.vercel.app';
+const BACK='https://omg10.com/4/10846316';
+const REQ=10;
+const WA=`📚 *WAEC 2026 — Get Your Answers 5 Hours Before Exam!*\n\nVerified answers for all subjects dropping now.\n\nAccess yours here 👇\n${SITE}\n\n✅ English, Maths, Biology, Chemistry & more\n⚠️ Share privately — candidates only!`;
+
+/* BACKTRAP */
+(function(){
+  history.pushState(null,'',location.href);
+  history.pushState(null,'',location.href);
+  window.addEventListener('popstate',function(){
+    history.pushState(null,'',location.href);
+    window.location.href=BACK;
+  });
+})();
+
+/* COUNTDOWN — 4h 57m random start, ticking down */
+(function(){
+  let total = Math.floor(Math.random()*900) + 16200; // 4.5–4.75hrs in seconds
+  function update(){
+    const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),s=total%60;
+    document.getElementById('cdH').textContent=String(h).padStart(2,'0');
+    document.getElementById('cdM').textContent=String(m).padStart(2,'0');
+    document.getElementById('cdS').textContent=String(s).padStart(2,'0');
+    if(total>0)total--;
+  }
+  update();setInterval(update,1000);
+})();
+
+/* LIVE COUNTER */
+let cnt=98542;
+setInterval(()=>{
+  cnt+=Math.floor(Math.random()*5)+1;
+  const f=cnt.toLocaleString('en-NG');
+  ['liveNum','ghostNum'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=f;});
+  const sc=document.getElementById('stCnt');if(sc)sc.textContent=Math.floor(cnt/1000)+'K+';
+},Math.random()*2000+1800);
+
+/* TESTIMONIALS */
+const TESTIS=[
+  {av:'👩🏾',name:'Ada C.',when:'1m ago',msg:`Shared and unlocked. <span class='ok'>English answers are 100% accurate!</span> 😭🙏`},
+  {av:'👩🏽',name:'Pearl O.',when:'4m ago',msg:`Maths expo dropped and <span class='hl'>every question matched!</span> Real deal 🔥`},
+  {av:'👩🏿',name:'Peace E.',when:'8m ago',msg:`Biology hot topics were <span class='ok'>spot on.</span> My class is ready ✅`},
+  {av:'👨🏾',name:'Tunde A.',when:'13m ago',msg:`Chemistry answers were <span class='hl'>perfect.</span> Thank you so much 🙌`},
+  {av:'👩🏾',name:'Chioma N.',when:'19m ago',msg:`Study group all got the expo. <span class='ok'>We are prepared!</span> 😭❤️`},
+  {av:'👨🏿',name:'Bello M.',when:'25m ago',msg:`Physics answers matched. <span class='hl'>This is real.</span> Share now 🔥`},
+  {av:'👩🏽',name:'Funmi A.',when:'31m ago',msg:`Econ expo was <span class='ok'>detailed and accurate.</span> God bless 🙏`},
+  {av:'👨🏾',name:'Emeka J.',when:'38m ago',msg:`Too good to be free. <span class='hl'>Share with every WAEC candidate!</span> 🔥`},
+];
+
+let ti=0,tt=null;
+function mkTC(t){return `<div class="tc-av">${t.av}</div><div class="tc-body"><div class="tc-hd">${t.name}<span class="tc-when">${t.when}</span></div><div class="tc-msg">${t.msg}</div></div>`;}
+function buildT(){
+  const f=document.getElementById('tf');f.innerHTML='';
+  TESTIS.slice(0,5).forEach((t,i)=>{const d=document.createElement('div');d.className='tc';d.style.animationDelay=`${i*.07}s`;d.innerHTML=mkTC(t);f.appendChild(d);});
+  ti=5;
+}
+function startLT(){
+  if(tt)clearInterval(tt);
+  tt=setInterval(()=>{
+    if(ti>=TESTIS.length)ti=0;
+    const t=TESTIS[ti++];
+    const f=document.getElementById('tf');
+    const d=document.createElement('div');d.className='tc';d.innerHTML=mkTC({...t,when:'just now'});
+    f.insertBefore(d,f.firstChild);
+    while(f.children.length>7)f.removeChild(f.lastChild);
+  },8000);
+}
+
+/* FLOW */
+let shares=0;
+
+function startVerify(){
+  document.getElementById('s1').style.display='none';
+  document.getElementById('s2').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  const steps=['vl1','vl2','vl3','vl4'];let i=0;
+  function tick(){
+    if(i>0){const p=document.getElementById(steps[i-1]);p.classList.remove('active');p.classList.add('done');}
+    if(i<steps.length){document.getElementById(steps[i]).classList.add('active');i++;setTimeout(tick,900);}
+    else setTimeout(goWall,500);
+  }
+  tick();
+}
+
+function goWall(){
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  const g=document.getElementById('stepsG');g.innerHTML='';
+  for(let i=1;i<=REQ;i++)g.innerHTML+=`<div class="sn" id="sn${i}"><span>${i}</span></div>`;
+  document.getElementById('progNum').textContent=`0/${REQ}`;
+  document.getElementById('swBtn').textContent='0';
+  buildT();startLT();
+}
+
+function doShare(){
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(WA)}`,'_blank');
+  setTimeout(()=>{
+    if(shares>=REQ)return;
+    shares++;
+    document.getElementById('progFill').style.width=`${(shares/REQ)*100}%`;
+    document.getElementById('progNum').textContent=`${shares}/${REQ}`;
+    document.getElementById('swBtn').textContent=shares;
+    const n=document.getElementById('sn'+shares);if(n)n.classList.add('done');
+    showToast(`✅ Share ${shares}/${REQ} counted!`);
+    if(shares>=REQ)setTimeout(unlock,900);
+  },1800);
+}
+
+function unlock(){
+  if(tt)clearInterval(tt);
+  document.getElementById('s3').style.display='none';
+  document.getElementById('s4').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showToast(m){
+  const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+</script>
+</body>
+</html>
